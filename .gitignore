@@ -1,0 +1,6 @@
+*.class
+dependency-*.xml
+/target
+/.idea
+*.iml
+*.log
