@@ -78,10 +78,13 @@ object Application extends App {
       case (phone, date, activity_type) if timeCheck1(date, activity_type) == 6 => ((phone, date.substring(0, 8)), (0, 0, 0, 0, 0, 1, 0, 0))
       case (phone, date, activity_type) if timeCheck1(date, activity_type) == 7 => ((phone, date.substring(0, 8)), (0, 0, 0, 0, 0, 0, 1, 0))
       case (phone, date, activity_type) if timeCheck1(date, activity_type) == 8 => ((phone, date.substring(0, 8)), (0, 0, 0, 0, 0, 0, 0, 1))
-      case (phone, date, activity_type) if timeCheck1(date, activity_type) == -1 => None
-    }
-    //.coalesce(1).saveAsTextFile("./output/test1")
-first_stage
+      //case (phone, date, activity_type) if timeCheck1(date, activity_type) == -1 => None
+    }.reduceByKey {
+    case ((v_morn_ac, v_day_ac, v_even_ac, v_night_ac, s_morn_ac, s_day_ac, s_even_ac, s_night_ac), (v_morn, v_day, v_even, v_night, s_morn, s_day, s_even, s_night))
+    => (v_morn_ac + v_morn, v_day_ac + v_day, v_even_ac + v_even, v_night_ac + v_night, s_morn_ac + s_morn, s_day_ac + s_day, s_even_ac + s_even, s_night_ac + s_night)
+  }
+  .coalesce(1).saveAsTextFile("./output/test1")
+
   /*
     val file = new File("./output/test_output")
     val bw = new BufferedWriter(new FileWriter(file))
