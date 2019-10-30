@@ -27,7 +27,7 @@ class Stage1 extends Serializable {
   }
 
 
-  def load(sc: SparkContext): RDD[(String, Array[Any])] = sc
+  def load(sc: SparkContext): RDD[(String, (String, Array[Int]))] = sc
     .textFile(Paths.path_stage1)
     .map(line => line.split("\\|", -1))
     .map(array => (array(1), array(2), array(32)))
@@ -50,7 +50,7 @@ class Stage1 extends Serializable {
       => (v_morn_ac + v_morn, v_day_ac + v_day, v_even_ac + v_even, v_night_ac + v_night, s_morn_ac + s_morn, s_day_ac + s_day, s_even_ac + s_even, s_night_ac + s_night)
     }.map {
     case ((phone, date), (v_morn, v_day, v_even, v_night, s_morn, s_day, s_even, s_night)) =>
-      (phone, Array(date, v_morn, v_day, v_even, v_night, s_morn, s_day, s_even, s_night))
+      (phone, (date, Array(v_morn, v_day, v_even, v_night, s_morn, s_day, s_even, s_night)))
   }
 
 

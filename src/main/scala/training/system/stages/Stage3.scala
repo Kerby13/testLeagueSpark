@@ -4,10 +4,10 @@ import org.apache.spark.rdd.RDD
 
 
 class Stage3 {
-  def load(rdd1: RDD[(String, Array[Any])], rdd2: RDD[(String, String)]): RDD[(String, Array[Any])] = {
+  def load(rdd1: RDD[(String, (String, Array[Int]))], rdd2: RDD[(String, String)]): RDD[(String, Int, Int, Int, Int, Int, Int, Int, Int, String)] = {
     rdd1.leftOuterJoin(rdd2).map {
-      case (phone, (Array(date, v_morn, v_day, v_even, v_night, s_morn, s_day, s_even, s_night), name)) =>
-        (phone, Array(date, v_morn, v_day, v_even, v_night, s_morn, s_day, s_even, s_night, name.getOrElse("NO_DATA")))
+      case (phone, ((date, Array(x1, x2, x3, x4, x5, x6, x7, x8)), name)) =>
+        (phone, x1, x2, x3, x4, x5, x6, x7, x8, name.getOrElse("NO_DATA"))
     }
   }
 }
