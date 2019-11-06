@@ -1,13 +1,13 @@
 package training.system.stages
 
 import org.apache.spark.rdd.RDD
+import org.apache.spark.sql.DataFrame
 
 
 class Stage3 {
-  def load(rdd1: RDD[(String, (String, Array[Int]))], rdd2: RDD[(String, String)]): RDD[(String, String, String)] = {
-    rdd1.leftOuterJoin(rdd2).map {
-      case (phone, ((date, arr), name)) =>
-        (phone, arr.mkString(","), name.getOrElse("NO_DATA"))
-    }
+
+  def load(df1: DataFrame, df2: DataFrame): DataFrame = {
+    val result = df1.join(df2, df1("phone") === df2("phone"), "left_outer").drop(df2("phone"))
+    result
   }
 }
