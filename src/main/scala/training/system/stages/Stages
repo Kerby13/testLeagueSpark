@@ -1,0 +1,13 @@
+package training.system.stages
+
+import org.apache.spark.broadcast.Broadcast
+import org.apache.spark.sql.functions._
+import org.apache.spark.sql.{DataFrame, SparkSession}
+import training.system.Parameters
+
+object Stages {
+  def loadStage1(spark: SparkSession, params: Parameters): DataFrame = {
+    import spark.implicits._
+    val cdr_input = spark.table(params.PATH_CDR_INPUT)
+  }
+}

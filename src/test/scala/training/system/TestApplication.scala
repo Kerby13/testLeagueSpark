@@ -24,7 +24,7 @@ class TestApplication extends FunSuite with BeforeAndAfterAll {
     val res1 = stage1.load(sc)
     val res2 = stage2.load(sc)
     val res3 = stage3.load(res1,res2)
-    res3.coalesce(1).saveAsTextFile(resourcePath + "res")
+    res3.saveAsTextFile(resourcePath + "res")
   }
 }
 

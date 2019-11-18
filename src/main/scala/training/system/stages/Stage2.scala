@@ -2,22 +2,26 @@ package training.system.stages
 
 import org.apache.spark.SparkContext
 import org.apache.spark.rdd.RDD
+import org.apache.spark.sql.{DataFrame, SparkSession}
+import training.system.Parameters
 
-class Stage2 extends Serializable {
+object Stage2 {
 
-  def load(sc: SparkContext): RDD[(String, String)] = {
-    val sc1 = sc
-      .textFile(Paths.path_stage2_ban)
-      .map(line => line.split("\u0001", -1))
-      .map(array => (array(0), array(14)))
-    val sc2 = sc
-      .textFile(Paths.path_stage3_subs)
-      .map(line => line.split("\u0001", -1))
-      .map(array => (array(0), array(1)))
+  def load(ss: SparkSession, params: Parameters): DataFrame = {
+    import ss.implicits._
 
-    sc2.leftOuterJoin(sc1).map{
-      case (ban, (phone, name)) => (phone, name.getOrElse("NO_DATA"))
-    }
+    val dimBanInfo = ss.table(params.DIM_BAN_INPUT_TABLE)
+      .select(
+        'BAN_KEY.alias("ban").cast(String),
+        'CUST_FULLNAME.alias("name").cast(String)
+      )
+
+    val dimSubscriberInfo = ss.table(params.DIM_SUBSCRIBER_INPUT_TABLE)
+      .select(
+        'BAN_KEY.alias("ban").cast(String),
+        'SUBS_KEY.alias("phone").cast(String)
+      ).join(dimBanInfo, 'ban === 'ban)
+      .select('phone,'name)
+    dimSubscriberInfo
   }
-
 }
