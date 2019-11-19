@@ -12,9 +12,9 @@ object Stage1 {
     import ss.implicits._
     val cdrInfo = ss.table(params.CDR_INPUT_TABLE)
       .select(
-        'subscriber_no.alias("phone").cast(String),
-        'channel_seizure_date_time.alias("date_time").cast(String),
-        'basic_service_type.alias("type").cast(String))
+        'subscriber_no.alias("phone"),
+        'channel_seizure_date_time.alias("date_time"),
+        'basic_service_type.alias("type"))
       .withColumn("call_morning",
         when(substring(col("date_time"), 8, 2) >= "6" &&
           substring(col("date_time"), 8, 2) < "11" &&
