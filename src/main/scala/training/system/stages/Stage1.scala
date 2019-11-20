@@ -11,6 +11,7 @@ object Stage1 {
   def load(ss: SparkSession, params: Parameters): DataFrame = {
     import ss.implicits._
     val cdrInfo = ss.table(params.CDR_INPUT_TABLE)
+      .filter(substring(col("channel_seizure_date_time"),0,8) === params.DATE_PART.toString)
       .select(
         'subscriber_no.alias("phone"),
         'channel_seizure_date_time.alias("date_time"),

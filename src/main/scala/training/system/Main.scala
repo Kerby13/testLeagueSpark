@@ -1,7 +1,7 @@
 package training.system
 
 import org.apache.hadoop.conf.Configuration
-import org.apache.hadoop.fs.FileSystem
+import org.apache.hadoop.fs.{FileSystem, Path}
 import org.apache.spark.sql.SparkSession
 import training.system.stages.{Stage1, Stage2, Stage3}
 
@@ -22,11 +22,14 @@ object Main {
 
     val ss = SparkSession.builder().appName("cdr_dim_ban_test").enableHiveSupport().getOrCreate()
 
+    if (fs.exists(new Path(parameters.RES_OUTPUT_PATH))) {
+      fs.delete(new Path(parameters.RES_OUTPUT_PATH), true)
+    }
+
     val stage1_res = Stage1.load(ss,parameters)
     val stage2_res = Stage2.load(ss,parameters)
     val stage3_res = Stage3.load(stage1_res, stage2_res)
     stage3_res.write.format("csv").save(parameters.RES_OUTPUT_PATH)
-
     ss.stop()
     //  spark.stop()
   }

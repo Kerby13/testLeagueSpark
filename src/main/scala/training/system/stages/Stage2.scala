@@ -18,7 +18,7 @@ object Stage2 {
       .select(
         'BAN_KEY.alias("ban"),
         'SUBS_KEY.alias("phone")
-      ).join(dimBanInfo, 'ban === 'ban)
+      ).join(dimBanInfo, "ban")
       .select('phone,'name)
     dimSubscriberInfo
   }

@@ -21,6 +21,7 @@ class Parameters(args: Array[String], fs: FileSystem) extends Serializable {
   val DIM_BAN_INPUT_TABLE = paramMap.getOrElse("DIM_BAN_INPUT_PATH", EMPTY_PATH)
   val DIM_SUBSCRIBER_INPUT_TABLE = paramMap.getOrElse("DIM_SUBSCRIBER_INPUT_PATH", EMPTY_PATH)
   val RES_OUTPUT_PATH = paramMap.getOrElse("RES_OUTPUT_PATH", EMPTY_PATH)
+  val DATE_PART = paramMap.getOrElse("DATE_PART", EMPTY_PATH)
 
   //val REPORT_DATE_YYYY_MM_DD = paramMap.getOrElse("REPORT_DATE_YYYY_MM_DD", EMPTY_PATH)
 
